@@ -1,0 +1,63 @@
+service: defender-as-code-test-project
+configValidationMode: error
+frameworkVersion: '3'
+provider:
+  name: defender
+  stage: ${opt:stage, 'dev'}
+  stackName: mystack
+  ssot: false
+custom:
+  config: ${file(secrets.${self:provider.stage}.yml)}
+defender:
+  key: ${process.env.DEFENDER_KEY}
+  secret: ${provess.env.DEFENDER_SECRET}
+resources:
+  actions: {}
+  policies:
+    policy-ui:
+      eip1559-pricing: true
+    policy-Bd:
+      eip1559-pricing: true
+  contracts:
+    voting:
+      name: Voting
+      address: '0x32558638ef465Fd5C0Ea798A9FbAcfF6Cd85eb75'
+      network: sepolia
+    whistle:
+      name: Whistle
+      address: '0x53Af3b143962B31fb072239805b9d684F168cdAc'
+      network: sepolia
+    whistle-factory:
+      name: WhistleFactory
+      address: '0x13E683E415f103EF928FACC49F7A49B248E874D3'
+      network: sepolia
+    erc-1967-proxy:
+      name: ERC1967Proxy
+      address: '0x4A055B44807AF91e338a9e6Bb4Bdfab125aB32e3'
+      network: sepolia
+    box:
+      name: Box
+      address: '0x78860Ae7e76E01FF7851771EBe3B4b471747f2B3'
+      network: sepolia
+    safe-wallet:
+      name: Safe Wallet
+      address: '0xd919011BB067EA482Ad0d87CF9Df3fFAE31c0c99'
+      network: sepolia
+  relayers:
+    base-sepolia-relayer:
+      name: baseSepoliaRelayer
+      network: base-sepolia
+      min-balance: '100000000000000000'
+      policy: ${self:resources.policies.policy-ui}
+    sepolia-relayer:
+      name: sepoliaRelayer
+      network: sepolia
+      min-balance: '100000000000000000'
+      policy: ${self:resources.policies.policy-Bd}
+  notifications: {}
+  monitors: {}
+  forked-networks: {}
+  private-networks: {}
+  block-explorer-api-keys: {}
+plugins:
+  - '@openzeppelin/defender-as-code'

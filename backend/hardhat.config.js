@@ -1,7 +1,6 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("@openzeppelin/hardhat-upgrades");
 require("dotenv").config();
-
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.20",
@@ -15,10 +14,10 @@ module.exports = {
       chainId: 84532
     }
   },
-  defaultNetwork:'sepolia',
-  defender: {
-    apiKey: process.env.DEFENDER_KEY,
-    apiSecret: process.env.DEFENDER_SECRET,
-    useDefenderDeploy: true,
-  }
+  //defaultNetwork:'sepolia',
+  // defender: {
+  //   apiKey: process.env.DEFENDER_KEY,
+  //   apiSecret: process.env.DEFENDER_SECRET,
+  //   useDefenderDeploy: false
+  // }
 };
