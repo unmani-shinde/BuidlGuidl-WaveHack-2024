@@ -7,7 +7,7 @@ const providerEthSepolia = new ethers.JsonRpcProvider(process.env.ETH_SEPOLIA_RP
 
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY, providerEthSepolia); // Using the signer for eth sepolia first
 
-async function deployWhistleFactory() {
+export async function deployWhistleFactory() {
     try {
         const WhistleFactory = await hre.ethers.getContractFactory('WhistleFactory', signer);
         
