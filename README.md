@@ -1,3 +1,3 @@
-# NeuToken🌿
+# HushZK🕵🏻‍♀️
 
-### Sustainable NFTs to Counter Climate Change
+### Saw Something? Say Something. Anonymously, with HushZK.
