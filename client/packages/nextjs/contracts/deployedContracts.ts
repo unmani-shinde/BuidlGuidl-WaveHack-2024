@@ -7,118 +7,335 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     HushZKFactory: {
-      address: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
       abi: [
         {
-          inputs: [
+          "inputs": [
             {
-              internalType: "address",
-              name: "_owner",
-              type: "address",
-            },
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            }
           ],
-          stateMutability: "nonpayable",
-          type: "constructor",
+          "stateMutability": "nonpayable",
+          "type": "constructor"
         },
         {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "creator",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "value",
-              type: "uint256",
-            },
-          ],
-          name: "ProfileCreated",
-          type: "event",
+          "inputs": [],
+          "name": "Create2EmptyBytecode",
+          "type": "error"
         },
         {
-          inputs: [],
-          name: "createSecretProfile",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function",
+          "inputs": [],
+          "name": "Create2FailedDeployment",
+          "type": "error"
         },
         {
-          inputs: [],
-          name: "numUsers",
-          outputs: [
+          "inputs": [
             {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
+              "internalType": "uint256",
+              "name": "balance",
+              "type": "uint256"
             },
+            {
+              "internalType": "uint256",
+              "name": "needed",
+              "type": "uint256"
+            }
           ],
-          stateMutability: "view",
-          type: "function",
+          "name": "Create2InsufficientBalance",
+          "type": "error"
         },
         {
-          inputs: [],
-          name: "owner",
-          outputs: [
+          "anonymous": false,
+          "inputs": [
             {
-              internalType: "address",
-              name: "",
-              type: "address",
+              "indexed": true,
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
             },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
           ],
-          stateMutability: "view",
-          type: "function",
+          "name": "ProfileCreated",
+          "type": "event"
         },
         {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "userAddresses",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
+          "inputs": [],
+          "name": "createSecretProfile",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function"
         },
         {
-          inputs: [
+          "inputs": [
             {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
+              "internalType": "string",
+              "name": "metadata",
+              "type": "string"
+            }
           ],
-          name: "userReportsContractIDs",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
+          "name": "deployReport",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
         },
+        {
+          "inputs": [],
+          "name": "numReports",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "numUsers",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "owner",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "userAddresses",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "userReportsContractIDs",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        }
       ],
       inheritedFunctions: {},
     },
   },
+  11155111:{
+    HushZKFactory:{
+      address:"0x9bEEEf0E0605807406903f45813740b12f23B19d",
+      abi: [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "Create2EmptyBytecode",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Create2FailedDeployment",
+          "type": "error"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "balance",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "needed",
+              "type": "uint256"
+            }
+          ],
+          "name": "Create2InsufficientBalance",
+          "type": "error"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "ProfileCreated",
+          "type": "event"
+        },
+        {
+          "inputs": [],
+          "name": "createSecretProfile",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "metadata",
+              "type": "string"
+            }
+          ],
+          "name": "deployReport",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "numReports",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "numUsers",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "owner",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "userAddresses",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "userReportsContractIDs",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ],
+    }
+  }
 } as const;
 
 export default deployedContracts satisfies GenericContractsDeclaration;

@@ -37,8 +37,9 @@ contract HushZKFactory {
         emit ProfileCreated(msg.sender, numUsers);
     }
 
-    function deployReport(bytes32 _salt, string memory metadata) external      
+    function deployReport(string memory metadata) external      
     {
+        bytes32 _salt = bytes32(block.timestamp);
         require(!(checkforWhistleblower(msg.sender)), "You do not have a profile on Hush. Please create one before moving ahead!");
         address latestReportAddress = Create2.deploy(0,_salt, abi.encodePacked(type(HushZKReport).creationCode, abi.encode(metadata,numReports))
         );
