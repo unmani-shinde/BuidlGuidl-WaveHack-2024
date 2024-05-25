@@ -21,8 +21,8 @@ const useWeb3 = (selectedPaymaster) => {
 
         console.log("networkVersion :>> ", networkVersion);
         // supports both testnet and local-setup
-        if (networkVersion != 270 && networkVersion != 280) {
-          alert("Please switch to the zkSync Testnet to use this application.");
+        if (networkVersion !== 300) {
+          alert("Please switch to the zkSync Sepolia Testnet to use this application.");
           return;
         }
 

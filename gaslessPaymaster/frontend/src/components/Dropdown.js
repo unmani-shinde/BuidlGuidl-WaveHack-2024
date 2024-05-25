@@ -1,10 +1,7 @@
 import React from "react";
 
 const CONTRACTS = [
-  "Allowlist Paymaster 📜",
   "Gasless Paymaster 🆓",
-  "ERC20Fixed Paymaster 🎫",
-  "ERC721Gated Paymaster 🎨",
 ];
 
 const ContractDropdown = ({

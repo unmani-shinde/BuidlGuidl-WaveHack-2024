@@ -13,16 +13,14 @@ import TxDetails from "@/components/TxDetails";
 import PaymasterMessage from "@/components/PaymasterMessage";
 import {
   GREETER_CONTRACT_ABI,
-  GASLESS_PAYMASTER,
-  ALLOWLIST_PAYMASTER,
+  GREETER_CONTRACT_ADDRESS,
+  GASLESS_PAYMASTER_ADDRESS
 } from "../constants/consts";
 import InstructionsCard from "@/components/InstructionsCard";
 
 const Home = () => {
   // State variables
   const [greeterContractInstance, setGreeterContractInstance] = useState(null);
-  const [additionalContractInstance, setAdditionalContractInstance] =
-    useState(null);
   const [newGreeting, setNewGreeting] = useState("");
   const [greeting, setGreeting] = useState("");
   const [greeterSet, isGreeterSet] = useState("");
@@ -30,77 +28,41 @@ const Home = () => {
   const [paymasterAddress, setPaymasterAddress] = useState("");
   const [paymasterSet, isPaymasterSet] = useState("");
   const [greeterAddress, setGreeterAddress] = useState("");
-  const [additionalAddress, setAdditionalAddress] = useState("");
-  const [additionalAddressSet, isAdditionalAddressSet] = useState("");
   const [inputAddress, setInputAddress] = useState("");
-  const [additionalInput, setAdditionalInput] = useState("");
   const [txDetails, setTxDetails] = useState(null);
   const [qualify, isQualify] = useState("");
   const { provider, signer, setProvider, setSigner, signerBalance } = useWeb3();
   const [loading, setLoading] = useState(true);
-
   // Handler to manage Paymaster selection
-  const handlePaymasterChange = (event) => {
-    setSelectedPaymaster(event.target.value);
-    isPaymasterSet(false);
-    isAdditionalAddressSet(false);
-    setTxDetails(null);
-    isQualify(null);
-  };
-  // Handler to set Paymaster address
-  const handlePaymasterAddress = (event) => {
-    setPaymasterAddress(event.target.value);
-    isPaymasterSet(true);
-  };
-  // Handler for changes to the additional input
-  const handleAdditionalInputChange = (event) => {
-    setAdditionalInput(event.target.value);
-  };
-  // Handler for setting Greeter contract address
-  const handleGreeterAddress = async (address) => {
-    setGreeterAddress(address);
+  useEffect(() => {
+    const initializeContract = async () => {
+      try {
+        setTxDetails(null);
+        isQualify(null);
 
-    if (provider && signer) {
-      const greeterContract = new Contract(
-        address,
-        GREETER_CONTRACT_ABI,
-        signer,
-      );
+        if (provider && signer) {
+          const greeterContract = new Contract(
+            GREETER_CONTRACT_ADDRESS,
+            GREETER_CONTRACT_ABI,
+            signer
+          );
 
-      setGreeterContractInstance(greeterContract);
+          setGreeterContractInstance(greeterContract);
 
-      const fetchedGreeting = await greeterContract.greet();
-      setGreeting(fetchedGreeting);
-      isGreeterSet(true);
-      setLoading(false);
-    }
-  };
-  // Handler for setting additional contract address
-  const handleAdditionalAddressSubmit = async (address) => {
-    setAdditionalAddress(address);
-
-    if (provider && signer) {
-      let additionalContract;
-
-      if (selectedPaymaster === ERC20_GATED_PAYMASTER) {
-        additionalContract = new Contract(
-          additionalAddress,
-          TOKEN_CONTRACT_ABI,
-          signer,
-        );
-      } else if (selectedPaymaster === ERC721_GATED_PAYMASTER) {
-        additionalContract = new Contract(
-          additionalAddress,
-          NFT_CONTRACT_ABI,
-          signer,
-        );
+          const fetchedGreeting = await greeterContract.greet();
+          setGreeting(fetchedGreeting);
+          isGreeterSet(true);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error setting up the greeter contract:", error);
       }
+    };
 
-      setAdditionalContractInstance(additionalContract);
-      isAdditionalAddressSet(true);
-    }
-  };
-  // Updates greeting on the contract
+    initializeContract();
+  }, [provider, signer]);
+  
+ 
   const updateGreeting = async (newGreeting, params) => {
     try {
       let txHandle;
@@ -130,6 +92,7 @@ const Home = () => {
       const paymasterResult = await payWithPayMaster();
       if (paymasterResult.error) {
         // Handle the error message here
+        
         if (
           paymasterResult.error.data.message.includes(
             "failed paymaster validation",
@@ -142,6 +105,7 @@ const Home = () => {
           await updateGreeting(newGreeting);
         }
       } else {
+        console.log("no error");
         isQualify(true);
         await updateGreeting(newGreeting, paymasterResult);
       }
@@ -153,22 +117,10 @@ const Home = () => {
   // Function to get Paymaster params; TODO: move these to utils
   const getPaymasterParams = async () => {
     let params;
-
-    switch (selectedPaymaster) {
-      case "ERC20Fixed Paymaster 🎫":
-        params = utils.getPaymasterParams(paymasterAddress, {
-          type: "ApprovalBased",
-          token: additionalAddress, // assumes token address is set
-          minimalAllowance: ethers.BigNumber.from(1),
-          innerInput: new Uint8Array(),
-        });
-        break;
-      default:
-        params = utils.getPaymasterParams(paymasterAddress, {
-          type: "General",
-          innerInput: new Uint8Array(),
-        });
-    }
+    params = utils.getPaymasterParams(GASLESS_PAYMASTER_ADDRESS, {
+      type: "General",
+      innerInput: new Uint8Array(),
+    });
 
     return params;
   };
@@ -211,52 +163,8 @@ const Home = () => {
         <InstructionsCard />
       </div>
       <Greeting greeting={greeting} />
-      <div className="flex flex-row">
-        <Input
-          placeholder="Greeter contract address 0x..."
-          title="Enter Greeter contract address"
-          className="mt-10 ml-8"
-          value={inputAddress}
-          onChange={(e) => setInputAddress(e.target.value)}
-        />
-        <Button
-          className="mt-16"
-          onClick={() => handleGreeterAddress(inputAddress)}
-        >
-          Set
-        </Button>
-      </div>
-      {greeterSet ? (
-        <p className="ml-8 text-green-600">Greeter contract set!</p>
-      ) : null}
-      <div className="flex flex-row">
-        <ContractDropdown
-          selectedPaymaster={selectedPaymaster}
-          handleContractChange={handlePaymasterChange}
-          className="mt-5 ml-8"
-        />
-        <Input
-          placeholder="Contract address 0x..."
-          title="Enter Paymaster contract address"
-          value={paymasterAddress}
-          onChange={handlePaymasterAddress}
-          className="mt-5"
-        />
-      </div>
-      {paymasterSet ? (
-        <p className="ml-8 text-green-600">Paymaster contract set!</p>
-      ) : null}
-      <div className="ml-8">
-        <PaymasterMessage
-          selectedPaymaster={selectedPaymaster}
-          additionalInput={additionalInput}
-          handleAdditionalInputChange={handleAdditionalInputChange}
-          handleAdditionalAddressSubmit={handleAdditionalAddressSubmit}
-        />
-        {additionalAddressSet ? (
-          <p className="text-green-600">Contract set!</p>
-        ) : null}
-      </div>
+      
+
       <div className="flex flex-row">
         <Input
           placeholder="Greeter message..."
